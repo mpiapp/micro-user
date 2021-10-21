@@ -50,7 +50,7 @@ describe('AdminService', () => {
       email: body.email
   }
 
-    mock.onPost(`https://dev-4fme9j23.us.auth0.com/dbconnections/signup`, {
+    mock.onPost(`https://${process.env.AUTH0_ADMINUSER_BASE_URL}/dbconnections/signup`, {
       client_id: process.env.AUTH0_ADMINUSER_CLIENT_ID,
       connection: process.env.AUTH0_ADMINUSER_CONNECTION,
       email: body.email, 
