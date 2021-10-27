@@ -1,6 +1,6 @@
 import { Body, Controller, Post, UnauthorizedException, Headers, UseGuards } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiCreatedResponse, ApiOkResponse, ApiUnauthorizedResponse } from '@nestjs/swagger';
-import { LoginAuthenticationGuard } from '../authz/authz.guard';
+import { LoginAuthenticationGuard, LoginSuperUserAuthenticationGuard } from '../authz/authz.guard';
 import { AdminService } from './admin.service';
 import { AdminUserCreateDTO } from './dto/admin-user-create.dto';
 import { AdminUserRegisterDTO } from './dto/admin-user-register.dto';
@@ -12,6 +12,7 @@ export class AdminController {
 
     constructor( private readonly adminUserService:AdminService ){}
 
+    @UseGuards(LoginSuperUserAuthenticationGuard)
     @ApiCreatedResponse({ type: AdminUser, description: 'register an admin-user' })
     @ApiBadRequestResponse({ description: 'False Request Payload' })
     @Post('register')
@@ -24,6 +25,26 @@ export class AdminController {
                 auth_id: registeredUser['_id'] ? registeredUser['_id'] : "",
                 email: registeredUser['email'] ? registeredUser['email'] : "",
                 flag: ['BUYER', 'VENDOR'].includes(body['flag']) ? body['flag'] : "",
+                status: 'ACTIVE',
+            }
+
+            if( userPayload.flag !== "" ) return this.adminUserService.registerCreate(userPayload)
+        }
+        throw new UnauthorizedException()
+    }
+
+    @ApiCreatedResponse({ type: AdminUser, description: 'register an admin superuser' })
+    @ApiBadRequestResponse({ description: 'False Request Payload' })
+    @Post('register-superuser')
+    async registerSuperuser(@Body() body: any): Promise<AdminUserCreateDTO> {
+        const registeredUser = await this.adminUserService.register(body)
+
+        /* istanbul ignore next */      // ignored for automatic registering user
+        if( registeredUser !== 'error' ) {
+            let userPayload: AdminUserCreateDTO = {
+                auth_id: registeredUser['_id'] ? registeredUser['_id'] : "",
+                email: registeredUser['email'] ? registeredUser['email'] : "",
+                flag: 'SUPERUSER',
                 status: 'ACTIVE',
             }
 

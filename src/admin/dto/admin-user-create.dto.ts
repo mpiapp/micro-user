@@ -15,7 +15,7 @@ export class AdminUserCreateDTO {
     email: string
 
     @ApiProperty()
-    @IsIn(['BUYER', 'VENDOR'])
+    @IsIn(['BUYER', 'VENDOR', 'SUPERUSER'])
     flag: string
 
     @ApiProperty()

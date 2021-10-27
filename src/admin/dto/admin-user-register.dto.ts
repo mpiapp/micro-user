@@ -9,7 +9,7 @@ export class AdminUserRegisterDTO {
     @ApiProperty()
     password: string
 
-    @ApiProperty()
-    @IsIn(['BUYER', 'VENDOR'])
-    flag: string
+    // @ApiProperty()
+    // @IsIn(['BUYER', 'VENDOR', 'SUPERUSER'])
+    // flag: string
 }

@@ -2,7 +2,7 @@ import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AdminController } from './admin.controller';
 import { AdminService } from './admin.service';
-import { EmailPayload, FalseRegisterPayloadOnlyNumberPass, FalseRegisterPayloadUppercasePass } from './mocks/admin-payload.mock';
+import { EmailPayload, FalseRegisterPayloadOnlyNumberPass, FalseRegisterPayloadOnlyNumberPassNoFlag, FalseRegisterPayloadUppercasePass, FalseRegisterPayloadUppercasePassNoFlag } from './mocks/admin-payload.mock';
 import { AdminUser } from './schema/admin.schema';
 
 describe('AdminController', () => {
@@ -24,6 +24,31 @@ describe('AdminController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
+
+  // register superuser
+  it(`should not register a superuser if all password number (Controller)`, async () => {
+    try {
+      await controller.registerSuperuser(FalseRegisterPayloadOnlyNumberPassNoFlag)
+    } catch (error) {
+      expect(error).toBeDefined()
+    }
+  })
+
+  it(`should not register a superuser if all password uppercase (Controller)`, async () => {
+    try {
+      await controller.registerSuperuser(FalseRegisterPayloadUppercasePassNoFlag)
+    } catch (error) {
+      expect(error).toBeDefined()
+    }
+  })
+
+  it(`should not register a superuser if all password lowercase (Controller)`, async function(){
+    try {
+      await controller.registerSuperuser(FalseRegisterPayloadUppercasePassNoFlag)
+    } catch (error) {
+      expect(error).toBeDefined()
+    }
+  })
 
   // register
   it(`should not register a user if all password number (Controller)`, async () => {

@@ -18,7 +18,7 @@ export class AdminUser {
 
     @ApiProperty()
     @Prop()
-    @IsIn(['BUYER', 'VENDOR'])
+    @IsIn(['BUYER', 'VENDOR', 'SUPERUSER'])
     flag: string
 
     @ApiProperty()

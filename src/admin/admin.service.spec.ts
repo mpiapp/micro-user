@@ -6,7 +6,7 @@ import { AdminUser } from './schema/admin.schema';
 import * as requester from 'axios';
 import * as MockAdapter from 'axios-mock-adapter';
 import * as dotenv from 'dotenv';
-import { EmailPayload, FalseRegisterPayloadLowercasePass, FalseRegisterPayloadNoNumberPass, FalseRegisterPayloadOnlyNumberPass, FalseRegisterPayloadUppercasePass, RegisterCreatePayload, RegisterCreatePayloadSuccess, TrueRegisterPayload } from './mocks/admin-payload.mock';
+import { EmailPayload, FalseRegisterPayloadLowercasePass, FalseRegisterPayloadNoNumberPass, FalseRegisterPayloadOnlyNumberPass, FalseRegisterPayloadUppercasePass, GetProfileByAuthId, RegisterCreatePayload, RegisterCreatePayloadSuccess, TrueRegisterPayload } from './mocks/admin-payload.mock';
 
 dotenv.config();
 
@@ -36,6 +36,10 @@ describe('AdminService', () => {
   });
 
   // crud
+  it(`should get a user profile by auth_id`, async () => {
+    expect(await service.getProfile("auth_id")).toEqual(GetProfileByAuthId("auth_id"))
+  })
+
   it(`should create a user after register success`, async () => {
     expect(await service.registerCreate(RegisterCreatePayload)).toEqual(RegisterCreatePayloadSuccess)
   })

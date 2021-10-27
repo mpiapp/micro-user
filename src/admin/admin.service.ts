@@ -15,6 +15,10 @@ export class AdminService {
 
     constructor( @InjectModel(AdminUser.name) private readonly adminUserModel:Model<AdminUserDocument> ) {}
 
+    async getProfile( auth_id: string ): Promise<any> {
+        return this.adminUserModel.findOne({ auth_id })
+    }
+
     async registerCreate( user: AdminUserCreateDTO ): Promise<any> {
         return this.adminUserModel.create(user)
     }
@@ -68,10 +72,14 @@ export class AdminService {
         try {
             let token = headers["token"]
             const options = { headers: { Authorization: `Bearer ${token}` } }
-            await requester.default.post(`https://${process.env.AUTH0_ADMINUSER_BASE_URL}/userinfo`, null, options)
+            let auth0_response = await requester.default.post(`https://${process.env.AUTH0_ADMINUSER_BASE_URL}/userinfo`, null, options)
 
             /* istanbul ignore next */      // ignored for automatic give access to user
-            return { message: 'Authorized' }
+            return { 
+                message: 'Authorized',
+                email_verified: auth0_response.data.email_verified,
+                auth_id: auth0_response.data.sub.split('|')[1]
+            }
         } catch (error) {
             // console.log(error.response.data)
             return 'error'
