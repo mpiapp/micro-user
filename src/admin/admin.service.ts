@@ -1,4 +1,4 @@
-import { ConsoleLogger, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AdminUserRegisterDTO } from './dto/admin-user-register.dto';
@@ -7,6 +7,8 @@ import * as requester from 'axios';
 import * as dotenv from 'dotenv';
 import { AdminUserCreateDTO } from './dto/admin-user-create.dto';
 import { UserEmailDTO } from './dto/user-email.dto';
+import { UpdateAdminDTO } from './dto/update-admin.dto';
+import { AuthIdDTO } from './dto/auth_id.dto';
 
 dotenv.config();
 
@@ -17,6 +19,11 @@ export class AdminService {
 
     async getProfile( auth_id: string ): Promise<any> {
         return this.adminUserModel.findOne({ auth_id })
+    }
+
+    async update(auth_id: AuthIdDTO, body: UpdateAdminDTO ): Promise<AdminUser> {
+        await this.adminUserModel.updateOne(auth_id, body)
+        return this.getProfile(auth_id.auth_id)
     }
 
     async registerCreate( user: AdminUserCreateDTO ): Promise<any> {

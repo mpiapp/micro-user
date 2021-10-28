@@ -21,4 +21,11 @@ export class AdminUserCreateDTO {
     @ApiProperty()
     @IsIn(['ACTIVE', 'INACTIVE'])
     status: string
+
+    @ApiProperty()
+    @IsIn(['SUPERADMIN', 'SUPERUSER'])
+    role: string
+
+    @ApiProperty()
+    name: string
 }

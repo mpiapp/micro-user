@@ -2,7 +2,8 @@ import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AdminController } from './admin.controller';
 import { AdminService } from './admin.service';
-import { EmailPayload, FalseRegisterPayloadOnlyNumberPass, FalseRegisterPayloadOnlyNumberPassNoFlag, FalseRegisterPayloadUppercasePass, FalseRegisterPayloadUppercasePassNoFlag } from './mocks/admin-payload.mock';
+import { AdminControllerMock } from './mocks/admin-controller.mock';
+import { EmailPayload, FalseRegisterPayloadOnlyNumberPass, FalseRegisterPayloadOnlyNumberPassNoFlag, FalseRegisterPayloadUppercasePass, FalseRegisterPayloadUppercasePassNoFlag, GetProfileByAuthId, MockAuthId, RegisterCreatePayloadWithoutAuthId, StringMockId } from './mocks/admin-payload.mock';
 import { AdminUser } from './schema/admin.schema';
 
 describe('AdminController', () => {
@@ -13,7 +14,7 @@ describe('AdminController', () => {
       controllers: [AdminController],
       providers: [AdminService,{
         provide: getModelToken(AdminUser.name),
-        useValue: {}        // will be filled with mocks for common CRUD
+        useValue: AdminControllerMock
       }, 
     ]
     }).compile();      
@@ -24,6 +25,12 @@ describe('AdminController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
+
+  // update
+  it(`should update a superadmin (Controller)`, async () => {
+    var test = await controller.update_superuser(StringMockId, RegisterCreatePayloadWithoutAuthId)
+    expect(test).toEqual(GetProfileByAuthId(StringMockId))
+  })
 
   // register superuser
   it(`should not register a superuser if all password number (Controller)`, async () => {
