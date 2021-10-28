@@ -92,7 +92,7 @@ export class AdminController {
         throw new UnauthorizedException()
     }
 
-    @UseGuards(LoginAuthenticationGuard)
+    // @UseGuards(LoginAuthenticationGuard)
     @ApiOkResponse({ description: 'checked user access' })
     @ApiBadRequestResponse({ description: 'False Request Payload' })
     @ApiUnauthorizedResponse({ description: 'Unauthorized' })
