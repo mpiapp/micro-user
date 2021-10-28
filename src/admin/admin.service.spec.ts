@@ -6,7 +6,7 @@ import { AdminUser } from './schema/admin.schema';
 import * as requester from 'axios';
 import * as MockAdapter from 'axios-mock-adapter';
 import * as dotenv from 'dotenv';
-import { EmailPayload, FalseRegisterPayloadLowercasePass, FalseRegisterPayloadNoNumberPass, FalseRegisterPayloadOnlyNumberPass, FalseRegisterPayloadUppercasePass, RegisterCreatePayload, RegisterCreatePayloadSuccess, TrueRegisterPayload } from './mocks/admin-payload.mock';
+import { EmailPayload, FalseRegisterPayloadLowercasePass, FalseRegisterPayloadNoNumberPass, FalseRegisterPayloadOnlyNumberPass, FalseRegisterPayloadUppercasePass, GetProfileByAuthId, MockAuthId, RegisterCreatePayload, RegisterCreatePayloadSuccess, RegisterCreatePayloadWithoutAuthId, StringMockId, TrueRegisterPayload } from './mocks/admin-payload.mock';
 
 dotenv.config();
 
@@ -36,9 +36,17 @@ describe('AdminService', () => {
   });
 
   // crud
+  it(`should get a user profile by auth_id`, async () => {
+    expect(await service.getProfile("auth_id")).toEqual(GetProfileByAuthId("auth_id"))
+  })
+
   it(`should create a user after register success`, async () => {
     expect(await service.registerCreate(RegisterCreatePayload)).toEqual(RegisterCreatePayloadSuccess)
   })
+
+  it('should update a user', async () => {
+    expect(await service.update(MockAuthId, RegisterCreatePayloadWithoutAuthId)).toEqual(GetProfileByAuthId(StringMockId));
+  });
 
   // register
   it(`should register a user & save to the database successfully`, async () => {
@@ -50,7 +58,7 @@ describe('AdminService', () => {
       email: body.email
   }
 
-    mock.onPost(`https://dev-4fme9j23.us.auth0.com/dbconnections/signup`, {
+    mock.onPost(`https://${process.env.AUTH0_ADMINUSER_BASE_URL}/dbconnections/signup`, {
       client_id: process.env.AUTH0_ADMINUSER_CLIENT_ID,
       connection: process.env.AUTH0_ADMINUSER_CONNECTION,
       email: body.email, 
