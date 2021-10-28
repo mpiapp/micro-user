@@ -67,8 +67,8 @@ export class AdminController {
         const loginedUser = await this.adminUserService.login(body)
 
         /* istanbul ignore next */      // ignored for automatic login user
-        if(loginedUser !== 'error') return loginedUser
-        throw new UnauthorizedException()
+        if(loginedUser.status !== 'error') return loginedUser
+        throw new UnauthorizedException(loginedUser.message)
     }
 
     @UseGuards(LoginSuperUserAuthenticationGuard)

@@ -112,19 +112,31 @@ describe('AdminService', () => {
   })
 
   it(`should not login a user if password not contain uppercase`, async () => {
-    expect(await service.login(FalseRegisterPayloadLowercasePass)).toMatch('error')
+    expect(await service.login(FalseRegisterPayloadLowercasePass)).toEqual({
+      status: 'error',
+      message: expect.any(String)
+    })
   })
 
   it(`should not login a user if password not contain lowercase`, async () => {
-    expect(await service.login(FalseRegisterPayloadUppercasePass)).toMatch('error')
+    expect(await service.login(FalseRegisterPayloadUppercasePass)).toEqual({
+      status: 'error',
+      message: expect.any(String)
+    })
   })
 
   it(`should not login a user if password not contain number`, async () => {
-    expect(await service.login(FalseRegisterPayloadNoNumberPass)).toMatch('error')
+    expect(await service.login(FalseRegisterPayloadNoNumberPass)).toEqual({
+      status: 'error',
+      message: expect.any(String)
+    })
   })
 
   it(`should not login a user if password not contain alphabet`, async () => {
-    expect(await service.login(FalseRegisterPayloadOnlyNumberPass)).toMatch('error')
+    expect(await service.login(FalseRegisterPayloadOnlyNumberPass)).toEqual({
+      status: 'error',
+      message: expect.any(String)
+    })
   })
 
   // check-access
