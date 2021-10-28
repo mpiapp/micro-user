@@ -85,10 +85,14 @@ export class AdminController {
     @ApiUnauthorizedResponse({ description: 'Unauthorized' })
     @Post('user-access')
     async user_access(@Headers() headers: object ): Promise<any> {
-        const checkedAccessUserResponse = await this.adminUserService.checkAccess(headers)
+        let checkedAccessUserResponse = await this.adminUserService.checkAccess(headers)
+        let profile_user = await this.adminUserService.getProfile(checkedAccessUserResponse.auth_id)
 
          /* istanbul ignore next */      // ignored for automatic login user
-        if(checkedAccessUserResponse !== 'error') return checkedAccessUserResponse
+        if(checkedAccessUserResponse !== 'error') return {
+            ...checkedAccessUserResponse,
+            profile_user
+        }
         throw new UnauthorizedException()
     }
 

@@ -85,7 +85,8 @@ export class AdminService {
             return { 
                 message: 'Authorized',
                 email_verified: auth0_response.data.email_verified,
-                auth_id: auth0_response.data.sub.split('|')[1]
+                auth_id: auth0_response.data.sub.split('|')[1],
+                avatar: auth0_response.data.picture
             }
         } catch (error) {
             // console.log(error.response.data)
