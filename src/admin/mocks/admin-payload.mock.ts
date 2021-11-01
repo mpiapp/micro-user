@@ -53,6 +53,27 @@ export const RegisterCreatePayloadSuccess = {
     name: 'Testt'
 }
 
+export const ArrayOfObjectAdmins = [
+    {
+        id: "id1",
+        auth_id: "1234",
+        email: "test1234@gmail.com",
+        flag: 'BUYER',
+        status: 'ACTIVE',
+        role: 'SUPERADMIN',
+        name: 'Testt'
+    },
+    {
+        id: "id2",
+        auth_id: "1234",
+        email: "test1234@gmail.com",
+        flag: 'BUYER',
+        status: 'ACTIVE',
+        role: 'SUPERADMIN',
+        name: 'Testt'
+    },
+]
+
 export const TrueRegisterPayload = { email: 'test123@gmail.com', password: process.env.MOCK_PASSWORD, flag: 'BUYER', role: 'SUPERADMIN', name: 'Testt' }
 export const FalseRegisterPayloadLowercasePass = { email: 'test123@gmail.com', password: process.env.MOCK_PASSWORD_LOWERCASE, flag: 'BUYER', role: 'SUPERADMIN', name: 'Testt' }
 export const FalseRegisterPayloadUppercasePass = { email: 'test123@gmail.com', password: process.env.MOCK_PASSWORD_UPPERCASE, flag: 'BUYER', role: 'SUPERADMIN', name: 'Testt' }

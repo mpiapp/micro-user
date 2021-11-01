@@ -6,7 +6,7 @@ import { AdminUser } from './schema/admin.schema';
 import * as requester from 'axios';
 import * as MockAdapter from 'axios-mock-adapter';
 import * as dotenv from 'dotenv';
-import { EmailPayload, FalseRegisterPayloadLowercasePass, FalseRegisterPayloadNoNumberPass, FalseRegisterPayloadOnlyNumberPass, FalseRegisterPayloadUppercasePass, GetProfileByAuthId, MockAuthId, RegisterCreatePayload, RegisterCreatePayloadSuccess, RegisterCreatePayloadWithoutAuthId, StringMockId, TrueRegisterPayload } from './mocks/admin-payload.mock';
+import { ArrayOfObjectAdmins, EmailPayload, FalseRegisterPayloadLowercasePass, FalseRegisterPayloadNoNumberPass, FalseRegisterPayloadOnlyNumberPass, FalseRegisterPayloadUppercasePass, GetProfileByAuthId, MockAuthId, RegisterCreatePayload, RegisterCreatePayloadSuccess, RegisterCreatePayloadWithoutAuthId, StringMockId, TrueRegisterPayload } from './mocks/admin-payload.mock';
 
 dotenv.config();
 
@@ -46,6 +46,10 @@ describe('AdminService', () => {
 
   it('should update a user', async () => {
     expect(await service.update(MockAuthId, RegisterCreatePayloadWithoutAuthId)).toEqual(GetProfileByAuthId(StringMockId));
+  });
+
+  it('should get list of admins', async () => {
+    expect(await service.getAll()).toEqual(ArrayOfObjectAdmins);
   });
 
   // register

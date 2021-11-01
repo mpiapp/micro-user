@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UnauthorizedException, Headers, UseGuards, Put, Param } from '@nestjs/common';
+import { Body, Controller, Post, UnauthorizedException, Headers, UseGuards, Put, Param, Get } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiCreatedResponse, ApiOkResponse, ApiParam, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { LoginSuperUserAuthenticationGuard } from '../authz/authz.guard';
 import { AdminService } from './admin.service';
@@ -12,6 +12,14 @@ import { AdminUser } from './schema/admin.schema';
 export class AdminController {
 
     constructor( private readonly adminUserService:AdminService ){}
+
+    @UseGuards(LoginSuperUserAuthenticationGuard)
+    @ApiCreatedResponse({ type: AdminUser, description: 'register an admin-user' })
+    @ApiBadRequestResponse({ description: 'False Request Payload' })
+    @Get('all-admin')
+    async findAll(): Promise<any> {
+        return this.adminUserService.getAll()
+    }
 
     @UseGuards(LoginSuperUserAuthenticationGuard)
     @ApiCreatedResponse({ type: AdminUser, description: 'register an admin-user' })

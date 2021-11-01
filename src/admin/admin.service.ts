@@ -17,6 +17,10 @@ export class AdminService {
 
     constructor( @InjectModel(AdminUser.name) private readonly adminUserModel:Model<AdminUserDocument> ) {}
 
+    async getAll(): Promise<any> {
+        return this.adminUserModel.find({})
+    }
+
     async getProfile( auth_id: string ): Promise<any> {
         return this.adminUserModel.findOne({ auth_id })
     }
